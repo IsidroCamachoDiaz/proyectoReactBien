@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { encriptarContrasenia } from './Recursos/encriptar.js';
 import { Link } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Util from './Recursos/Util.js';
 
 const RegistroAlumno = () => {
-
     const [formulario, setFormulario] = useState({
         correo: '',
         contrasenia: '',
@@ -14,26 +13,31 @@ const RegistroAlumno = () => {
         apellidos: ''
     });
 
+    const [tipoUsuario, setTipoUsuario] = useState('alumno');
 
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormulario({ ...formulario, [name]: value });
     };
 
-    const handleSubmit = async (event) => {
+    const handleTipoUsuarioChange = (event) => {
+        setTipoUsuario(event.target.value);
+    };
 
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            // Encriptar la contraseña antes de enviarla al servidor
             formulario.contrasenia = await encriptarContrasenia(formulario.contrasenia);
 
-            // Realizar la solicitud HTTP POST al servidor
-            await axios.post('http://localhost:3001/alumnos', formulario);
+            let endpoint = tipoUsuario === 'alumno' ? 'http://localhost:3001/alumnos' : 'http://localhost:3001/profesores';
 
-            alert('Alumno registrado correctamente');
+            await axios.post(endpoint, formulario);
 
-            // Limpiar el formulario después de enviar los datos
+            alert('Usuario registrado correctamente');
+
+            Util.usuario=formulario;
+
             setFormulario({
                 correo: '',
                 contrasenia: '',
@@ -41,8 +45,8 @@ const RegistroAlumno = () => {
                 apellidos: ''
             });
         } catch (error) {
-            console.error('Error al registrar alumno:', error);
-            alert('Hubo un error al registrar al alumno. Por favor, inténtalo de nuevo más tarde.');
+            console.error('Error al registrar usuario:', error);
+            alert('Hubo un error al registrar al usuario. Por favor, inténtalo de nuevo más tarde.');
         }
     };
 
@@ -52,7 +56,7 @@ const RegistroAlumno = () => {
                 <div className="col-md-4"></div>
                 <div className="col-md-4">
                     <form onSubmit={handleSubmit}>
-                        <h2>Registro de Alumno</h2>
+                        <h2>Registro de Usuario</h2>
                         <div className="form-group text-left">
                             <label htmlFor="correo">Correo:</label>
                             <input
@@ -101,9 +105,22 @@ const RegistroAlumno = () => {
                                 required
                             />
                         </div>
-                        <button type="submit" className="btn btn-primary mt-3" >Registrar Alumno</button>
+                        <div className="form-group">
+                            <label htmlFor="tipoUsuario">Tipo de Usuario:</label>
+                            <select
+                                className="form-control"
+                                id="tipoUsuario"
+                                name="tipoUsuario"
+                                value={tipoUsuario}
+                                onChange={handleTipoUsuarioChange}
+                            >
+                                <option value="alumno">Alumno</option>
+                                <option value="profesor">Profesor</option>
+                            </select>
+                        </div>
+                        <button type="submit" className="btn btn-primary mt-3" >Registrar Usuario</button>
                     </form>
-                    <button className='btn btn-primary'>
+                    <button className='btn btn-primary' style={{ margin: '10px' }}>
                         <Link to="/iniciar-sesion" style={{ textDecoration: 'none', color: 'white' }} >Iniciar Sesion</Link>
                     </button>
                 </div>
