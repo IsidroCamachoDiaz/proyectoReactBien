@@ -2,16 +2,21 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Util from './Recursos/Util.js';
 
+// Componente funcional para crear una nueva pregunta
 const CrearPregunta = () => {
+
+   // Estados para almacenar datos relacionados con la pregunta y el mensaje de respuesta
   const [asignaturas, setAsignaturas] = useState([]);
   const [idAsignaturaSeleccionada, setIdAsignaturaSeleccionada] = useState('');
   const [textoPregunta, setTextoPregunta] = useState('');
   const [mensaje, setMensaje] = useState('');
 
+  // Efecto para cargar las asignaturas del profesor al cargar el componente
   useEffect(() => {
     obtenerAsignaturasProfesor();
   }, []);
 
+   // Función para obtener las asignaturas del profesor desde el servidor
   const obtenerAsignaturasProfesor = async () => {
     try {
       const response = await axios.get(`http://localhost:3001/asignaturas?idProfesor=${Util.usuario.id_profesor}`);
@@ -22,11 +27,15 @@ const CrearPregunta = () => {
     }
   };
 
+   // Función para manejar el envío del formulario y agregar una nueva pregunta
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+       // Enviar una solicitud POST al servidor para agregar la pregunta
       await axios.post('http://localhost:3001/preguntas', { id_asignatura: idAsignaturaSeleccionada, texto: textoPregunta });
-      setMensaje('Pregunta agregada correctamente');
+      // Actualizar el estado mensaje con el mensaje de éxito
+      setMensaje('Pregunta agregada correctamente'); 
+      // Limpiar el campo de texto de la pregunta después de agregarla
       setTextoPregunta('');
     } catch (error) {
       console.error('Error al agregar pregunta:', error);
@@ -34,6 +43,7 @@ const CrearPregunta = () => {
     }
   };
 
+  // Renderización del componente en el fomulario enseñamos las asignaturas del profesor
   return (
     <div>
       <h2>Crear Nueva Pregunta</h2>

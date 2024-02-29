@@ -47,6 +47,7 @@ const IniciarSesion = () => {
         return <Navigate to="/" />;
       }
 
+      //Asignamos el usuario a la variable estatica
       Util.usuario=usuario;
       console.log(usuario);
       // Iniciar sesión exitosa, redirigir a la página principal
@@ -60,8 +61,11 @@ const IniciarSesion = () => {
     try {
       // Obtener los datos del usuario por correo electrónico
       const response = await axios.get(`http://localhost:3001/profesores/${formulario.correo}`); // Cambiamos la ruta del endpoint
+      //Asignamos el usuario
       usuario = response.data;
       console.log(usuario);
+
+      //Si no hay usuario avisamos al usuario
       if (!usuario) {
         setError('Correo electrónico no registrado');
         setSesionIniciada(false);
@@ -71,6 +75,7 @@ const IniciarSesion = () => {
       // Verificar si la contraseña encriptada coincide
       const contraseniaEncriptada = encriptarContrasenia(formulario.contrasenia);
 
+      //Comprobamos si la contraseña es la correcta
       if (usuario.contrasenia == contraseniaEncriptada.value) {
         setSesionIniciada(true);
 
@@ -81,6 +86,7 @@ const IniciarSesion = () => {
         return <Navigate to="/" />;
       }
 
+      //Asiganmos el usuario
       Util.usuario=usuario;
       console.log(usuario);
       // Iniciar sesión exitosa, redirigir a la página principal
@@ -94,12 +100,14 @@ const IniciarSesion = () => {
 
   };
 
+  //Si esta la sesion inicada se lleva al menu
   if (sesionIniciada) {
     console.log("Bien");
     return <Navigate to="/menu" />;
 
   }
 
+  //Devolvemos el html
   return (
     <><div className="container-fluid"><div className="row">
       <div className="col-md-4"></div>

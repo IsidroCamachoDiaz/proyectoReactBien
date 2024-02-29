@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+//Llamos al componente principal que tiene toda la aplicacion web
 root.render(
   <React.StrictMode>
     <App />

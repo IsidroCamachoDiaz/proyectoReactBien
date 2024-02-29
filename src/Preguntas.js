@@ -35,13 +35,19 @@ const PreguntasAlumno = ({ idAlumno }) => {
     }
   };
 
+  // Función asincrónica para obtener preguntas por asignatura
   const obtenerPreguntasPorAsignatura = async (idsAsignaturas) => {
     try {
+      // Función asincrónica para obtener preguntas por asignatura
       const preguntas = {};
+       // Utilizar Promise.all para hacer múltiples solicitudes GET en paralelo
       await Promise.all(idsAsignaturas.map(async (idAsignatura) => {
+        // Realizar una solicitud GET para obtener las preguntas de la asignatura actual
         const response = await axios.get(`http://localhost:3001/preguntas/${idAsignatura}`);
+        // Almacenar las preguntas en el objeto preguntas utilizando el ID de la asignatura como clave
         preguntas[idAsignatura] = response.data;
       }));
+      // Actualizar el estado preguntasPorAsignatura con el objeto de preguntas
       setPreguntasPorAsignatura(preguntas);
     } catch (error) {
       console.error('Error al obtener preguntas por asignatura:', error);
@@ -49,6 +55,7 @@ const PreguntasAlumno = ({ idAlumno }) => {
     }
   };
 
+  //Devuelve html
   return (
     <div>
       <h2>Preguntas del Alumno</h2>

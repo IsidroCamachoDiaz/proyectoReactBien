@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import './Menu.css'; // Importa el archivo CSS para los estilos
 import Util from './Recursos/Util.js';
 
+//Componente del menu de la web
 export const Menu = () => {
   console.log(Util.usuario);
   const esProfesor = Util.usuario && Util.usuario.ID_PROFESOR;
+  //Devolvemos el html
   return (
     <div className="menu">
       <nav>
@@ -30,9 +32,5 @@ export const Menu = () => {
     </div>
   );
 };
-
-const Asignaturas = () => <h2>Asignaturas</h2>;
-const Preguntas = () => <h2>Preguntas</h2>;
-const Respuestas = () => <h2>Respuestas</h2>;
 
 export default Menu;

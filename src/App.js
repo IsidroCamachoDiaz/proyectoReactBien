@@ -12,7 +12,7 @@ import ContestarPreguntas from './Respuesta';
 
 function App() {
   return (
-    <Router> {/* Wrap your Routes in a Router component */}
+    <Router> {/*Aqui se ponen las rutas de la web*/}
       <Routes>
         <Route path="/" element={<RegistroAlumno />} />
         <Route path="/iniciar-sesion" element={<IniciarSesion />} />
